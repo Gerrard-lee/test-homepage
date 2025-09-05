@@ -1,94 +1,279 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>티유치과 소개</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TU Strategy Lab — 반응형 랜딩페이지</title>
+  <meta name="description" content="CX·데이터 기반 전략 홈페이지 (반응형, 1파일 버전)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Noto Sans KR', sans-serif; margin: 0; padding: 0; }
-    header { background: #0077b6; color: white; padding: 40px; text-align: center; }
-    nav a { margin: 0 10px; text-decoration: none; color: white; font-weight: bold; }
-    nav a:hover { text-decoration: underline; }
-    section { padding: 40px 20px; max-width: 900px; margin: auto; }
-    h2 { color: #0077b6; margin-bottom: 20px; }
-    .services { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-    .card { border: 1px solid #ddd; border-radius: 12px; padding: 20px; width: 250px; text-align: center; }
-    footer { background: #f1f1f1; text-align: center; padding: 20px; font-size: 14px; }
-
-    /* 버튼 스타일 */
-    .btn {
-      display: inline-block;
-      background: #0077b6;
-      color: #fff;
-      padding: 10px 16px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      margin-top: 12px;
+    :root{
+      --bg: #f8fafc; --fg:#0f172a; --muted:#475569; --card:#ffffff; --line:#e2e8f0;
+      --accent:#0f172a; --accent-2:#334155; --brand:#111827;
     }
-    .btn:hover { background: #005f90; }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:"Pretendard",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{max-width:1120px;margin:0 auto;padding:0 20px}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.1rem;border-radius:999px;border:1px solid var(--line);background:var(--brand);color:#fff;font-weight:600}
+    .btn.outline{background:#fff;color:var(--brand)}
+    .chip{display:inline-flex;gap:.4rem;align-items:center;font-size:.75rem;border:1px solid var(--line);padding:.35rem .7rem;border-radius:999px;background:#fff}
+    .nav{position:sticky;top:0;backdrop-filter:saturate(140%) blur(6px);background:rgba(255,255,255,.75);border-bottom:1px solid var(--line);z-index:50}
+    .nav-inner{height:64px;display:flex;align-items:center;justify-content:space-between}
+    .logo{display:flex;gap:.6rem;align-items:center}
+    .logo-badge{width:32px;height:32px;border-radius:12px;background:var(--brand);display:grid;place-items:center;color:#fff;font-weight:800}
+    .nav-links{display:none;gap:1.2rem}
+    @media(min-width:768px){.nav-links{display:flex}}
+
+    .hero{position:relative;overflow:hidden}
+    .hero::before{
+      content:"";position:absolute;inset:0;pointer-events:none;opacity:.45;
+      background:
+        radial-gradient(600px 300px at 10% 10%, rgba(59,130,246,.18), transparent),
+        radial-gradient(600px 300px at 90% 10%, rgba(236,72,153,.18), transparent);
+    }
+    .grid-2{display:grid;gap:2rem}
+    @media(min-width:960px){.grid-2{grid-template-columns:1.1fr .9fr}}
+
+    .h1{font-size:clamp(32px,4vw,52px);line-height:1.1;margin:.3rem 0 0}
+    .lead{color:var(--muted);font-size:clamp(15px,2.2vw,18px)}
+    .list-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem 1rem;color:var(--muted);font-size:.95rem;margin-top:.6rem}
+
+    .section{padding:64px 0}
+    .title{font-size:28px;font-weight:800;margin:0}
+    .muted{color:var(--muted)}
+    .cards{display:grid;gap:1rem}
+    @media(min-width:900px){.cards{grid-template-columns:repeat(3,1fr)}}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+    .card-body{padding:22px}
+    .card-head{padding:22px}
+    .iconbox{width:40px;height:40px;border-radius:12px;background:var(--brand);color:#fff;display:grid;place-items:center}
+
+    .strip{background:#fff;border-block:1px solid var(--line)}
+    .metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;text-align:center}
+    @media(min-width:900px){.metrics{grid-template-columns:repeat(4,1fr)}}
+    .metric-n{font-size:28px;font-weight:800}
+    .metric-l{font-size:12px;color:var(--muted);margin-top:4px}
+
+    .about-grid{display:grid;gap:2rem}
+    @media(min-width:960px){.about-grid{grid-template-columns:1fr 1fr}}
+    .about-pics{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .about-pics img{height:130px;object-fit:cover;border-radius:14px}
+
+    .contact{background:var(--brand);color:#fff}
+    .contact-grid{display:grid;gap:2rem}
+    @media(min-width:960px){.contact-grid{grid-template-columns:1fr 1fr}}
+    .form{background:#fff;color:var(--fg);border:1px solid var(--line);border-radius:16px;padding:22px}
+    .input,.textarea{width:100%;padding:.8rem .9rem;border-radius:10px;border:1px solid var(--line);outline:none}
+    .textarea{min-height:120px;resize:vertical}
+    .form .btn{width:100%}
+
+    .footer{background:#fff;border-top:1px solid var(--line);font-size:14px}
+    .foot-inner{display:flex;gap:1rem;justify-content:space-between;align-items:center;flex-wrap:wrap;padding:20px 0}
+    .links{display:flex;gap:1rem}
+
+    /* 작은 모션 */
+    .fade-up{opacity:0;transform:translateY(12px);animation:fadeUp .6s .05s both}
+    .fade-up.delay{animation-delay:.15s}
+    @keyframes fadeUp{to{opacity:1;transform:none}}
+    .tag{display:inline-block;padding:.2rem .55rem;border:1px solid var(--line);border-radius:999px;font-size:11px;letter-spacing:.06em;color:#64748b;text-transform:uppercase}
   </style>
 </head>
 <body>
 
-<header>
-  <h1>티유치과</h1>
-  <p>환자의 건강과 아름다운 미소를 함께 지켜드립니다</p>
-  <!-- 헤더 네비게이션 -->
-  <nav>
-    <a href="index.html">홈</a>
-    <a href="about.html">의료진 소개</a>
-  </nav>
-</header>
-
-<section>
-  <h2>병원 소개</h2>
-  <p>
-    티유치과는 첨단 장비와 숙련된 의료진을 바탕으로 환자 맞춤형 진료를 제공합니다.  
-    임플란트, 교정, 심미치과 등 다양한 분야에서 전문성을 갖추고 있으며,  
-    환자의 편안함과 안전을 최우선으로 생각합니다.
-  </p>
-  <!-- 본문 버튼 -->
-  <a class="btn" href="about.html">의료진 소개 보러가기</a>
-</section>
-
-<section>
-  <h2>진료 과목</h2>
-  <div class="services">
-    <div class="card">
-      <h3>임플란트</h3>
-      <p>정확한 진단과 최신 기술을 활용한 안전한 시술</p>
+  <!-- NAV -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <div class="logo">
+        <div class="logo-badge">★</div>
+        <strong>TU Strategy Lab</strong>
+      </div>
+      <nav class="nav-links">
+        <a href="#services">서비스</a>
+        <a href="#cases">사례</a>
+        <a href="#about">소개</a>
+        <a href="#contact">문의</a>
+      </nav>
+      <a class="btn" href="#contact">상담 예약</a>
     </div>
-    <div class="card">
-      <h3>교정 치료</h3>
-      <p>연령별 맞춤 교정 솔루션 제공</p>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero section">
+    <div class="container grid-2">
+      <div class="fade-up">
+        <span class="chip">10분 완성 · 반응형 랜딩</span>
+        <h1 class="h1">CX·데이터 기반 <span style="background:linear-gradient(90deg,#0f172a,#475569);-webkit-background-clip:text;background-clip:text;color:transparent">전략 홈페이지</span></h1>
+        <p class="lead">의료 MSO/CIP 맥락에 맞춘 브랜딩·포트폴리오·문의 전환까지 한 번에. 필요한 문구만 바꿔 바로 사용하세요.</p>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:16px">
+          <a class="btn" href="#contact">지금 문의하기</a>
+          <a class="btn outline" href="#cases">사례 살펴보기</a>
+        </div>
+        <ul class="list-2">
+          <li>반응형(모바일/PC)</li>
+          <li>경량 컴포넌트</li>
+          <li>무료 배포 가이드</li>
+          <li>문의 폼 포함</li>
+        </ul>
+      </div>
+      <div class="fade-up delay">
+        <div style="position:relative;aspect-ratio:4/3;border-radius:18px;overflow:hidden;box-shadow:0 20px 40px rgba(2,6,23,.15);border:1px solid var(--line)">
+          <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1600&auto=format&fit=crop" alt="dashboard" style="width:100%;height:100%;object-fit:cover">
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),transparent)"></div>
+          <div style="position:absolute;left:16px;bottom:14px;color:#fff">
+            <div class="tag">Sample</div>
+            <div style="font-weight:700;margin-top:6px">MSO/CIP 성과 대시보드</div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="card">
-      <h3>심미 치과</h3>
-      <p>자연스럽고 아름다운 미소를 위한 치료</p>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="section">
+    <div class="container" style="text-align:center">
+      <h2 class="title">무엇을 제공하나요?</h2>
+      <p class="muted" style="margin-top:6px">의료·커머스 조직에서 바로 쓰는 실전형 홈페이지 섹션</p>
+      <div class="cards" style="margin-top:18px">
+        <article class="card">
+          <div class="card-head">
+            <div class="iconbox">📈</div>
+            <h3 style="margin:10px 0 4px">데이터 스토리텔링</h3>
+            <p class="muted">매출·KPI·VOC 지표를 명확한 그래프/카피로 전달</p>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-head">
+            <div class="iconbox">🛡️</div>
+            <h3 style="margin:10px 0 4px">신뢰·컴플라이언스</h3>
+            <p class="muted">의료/법적 문구, 개인정보 처리방침 섹션 포함</p>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-head">
+            <div class="iconbox">👥</div>
+            <h3 style="margin:10px 0 4px">리드 전환</h3>
+            <p class="muted">상담 버튼·문의 폼·CTA 배치 최적화</p>
+          </div>
+        </article>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section>
-  <h2>의료진 소개</h2>
-  <p>풍부한 임상 경험을 가진 전문 의료진이 최선의 진료를 약속드립니다.</p>
-  <ul>
-    <li>홍길동 원장 – 보철 전문의</li>
-    <li>김철수 원장 – 교정 전문의</li>
-  </ul>
-</section>
+  <!-- CASES -->
+  <section id="cases" class="section">
+    <div class="container" style="text-align:center">
+      <h2 class="title">프로젝트 & 사례</h2>
+      <p class="muted" style="margin-top:6px">실제처럼 편집 가능한 더미 카드 3종</p>
+      <div class="cards" style="margin-top:18px">
+        <article class="card">
+          <img src="https://images.unsplash.com/photo-1551836022-deb4988cc6c0?q=80&w=1600&auto=format&fit=crop" alt="case">
+          <div class="card-body">
+            <h3 style="margin:0 0 6px">MSO 운영 표준화</h3>
+            <p class="muted">핵심 KPI: CS 응답 SLA 95%</p>
+            <p class="muted" style="margin-top:8px">문제 → 접근 → 결과 순으로 3~4문장 설명을 여기에 작성.</p>
+          </div>
+        </article>
+        <article class="card">
+          <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=1600&auto=format&fit=crop" alt="case">
+          <div class="card-body">
+            <h3 style="margin:0 0 6px">CIP SaaS LTV 전략</h3>
+            <p class="muted">핵심 KPI: 월 반복구매 +18%</p>
+            <p class="muted" style="margin-top:8px">문제 → 접근 → 결과 순으로 3~4문장 설명을 여기에 작성.</p>
+          </div>
+        </article>
+        <article class="card">
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1600&auto=format&fit=crop" alt="case">
+          <div class="card-body">
+            <h3 style="margin:0 0 6px">VOC 개선 대시보드</h3>
+            <p class="muted">핵심 KPI: 민원 재발 -23%</p>
+            <p class="muted" style="margin-top:8px">문제 → 접근 → 결과 순으로 3~4문장 설명을 여기에 작성.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
 
-<section>
-  <h2>위치 & 연락처</h2>
-  <p>서울 서초구 서초대로 000 (더블유타워 13층)</p>
-  <p>전화: 02-1234-5678</p>
-  <p>예약: <a href="https://tu-dental.co.kr" target="_blank">공식 홈페이지 바로가기</a></p>
-</section>
+  <!-- METRICS STRIP -->
+  <section class="strip">
+    <div class="container" style="padding:38px 20px">
+      <div class="metrics">
+        <div><div class="metric-n">107명</div><div class="metric-l">팀 규모(예시)</div></div>
+        <div><div class="metric-n">22.2억</div><div class="metric-l">월 KPI(예시)</div></div>
+        <div><div class="metric-n">95%</div><div class="metric-l">SLA 달성</div></div>
+        <div><div class="metric-n">4.9/5</div><div class="metric-l">고객만족</div></div>
+      </div>
+    </div>
+  </section>
 
-<footer>
-  <p>© 2025 티유치과. All Rights Reserved.</p>
-</footer>
+  <!-- ABOUT -->
+  <section id="about" class="section">
+    <div class="container about-grid">
+      <div>
+        <h2 class="title">왜 우리인가요?</h2>
+        <p class="muted" style="margin-top:10px">CX/VOC 운영, 전략기획, 데이터 분석 기반의 실행력을 홈페이지에 그대로 녹였습니다. MSO·CIP 특수성을 반영한 정보 구조로 신뢰와 전환을 동시에 잡습니다.</p>
+        <ul class="muted" style="margin-top:16px;line-height:1.8">
+          <li>🏥 의료/MSO 도메인 적합 카피 & 레이아웃</li>
+          <li>📊 KPI 스토리(EBITDA, BEP, SLA 등) 가독성 강화</li>
+          <li>🧲 리드 전환 CTA 및 간편 문의 폼</li>
+        </ul>
+      </div>
+      <div class="about-pics">
+        <img src="https://images.unsplash.com/photo-1551836022-4c4c79ecde51?q=80&w=1200&auto=format&fit=crop" alt="">
+        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop" alt="">
+        <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1200&auto=format&fit=crop" alt="">
+        <img src="https://images.unsplash.com/photo-1557800636-894a64c1696f?q=80&w=1200&auto=format&fit=crop" alt="">
+      </div>
+    </div>
+  </section>
 
+  <!-- CONTACT -->
+  <section id="contact" class="contact section">
+    <div class="container contact-grid">
+      <div>
+        <h2 class="title" style="color:#fff">문의하기</h2>
+        <p class="muted" style="color:#cbd5e1;margin-top:6px">간단히 남겨주시면 빠르게 회신합니다. 아래 폼은 데모이며 전송 로직은 곧바로 연동 가능해요.</p>
+        <div style="margin-top:16px;display:grid;gap:.5rem;color:#e2e8f0">
+          <div>📧 hello@tu-strategy.co.kr</div>
+          <div>📞 010-1234-5678</div>
+          <div>📍 서울특별시 ○○구 ○○로 123</div>
+        </div>
+      </div>
+
+      <form class="form" onsubmit="submitDemo(event)">
+        <h3 style="margin:0 0 6px">빠른 상담</h3>
+        <p class="muted" style="margin-top:0">이 폼은 데모입니다. 제출 시 알림만 표시됩니다.</p>
+        <div style="display:grid;gap:.8rem;margin-top:12px">
+          <input class="input" placeholder="이름" required>
+          <input class="input" type="email" placeholder="이메일" required>
+          <input class="input" placeholder="연락처">
+          <textarea class="textarea" placeholder="문의 내용"></textarea>
+          <button class="btn" type="submit">보내기 →</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container foot-inner">
+      <div>© <span id="y"></span> TU Strategy Lab. All rights reserved.</div>
+      <div class="links">
+        <a href="#">개인정보 처리방침</a>
+        <a href="#">이용약관</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+    function submitDemo(e){
+      e.preventDefault();
+      alert("문의가 접수된 것으로 가정합니다. 실제 메일/시트 연동은 곧바로 연결할 수 있어요.");
+      e.target.reset();
+    }
+  </script>
 </body>
 </html>
